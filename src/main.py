@@ -78,14 +78,21 @@ def classify(test_img, theta):
 DB = loadData('database')
 print(DB.shape)
 
-img = cv2.imread('../TrainingSet/Genuine/G003.png', cv2.IMREAD_GRAYSCALE)
-print(classify(img, 0.09))
 
-img = cv2.imread('../TrainingSet/Genuine/G007.png', cv2.IMREAD_GRAYSCALE)
-print(classify(img, 0.09))
+""" Number of matched points for Genuine Signatures """
+print("Genuine Signatures")
+file_names = os.listdir('../TrainingSet/Genuine')
+for img_name in file_names:
+    print(classify(cv2.imread('../TrainingSet/Genuine/' + img_name, cv2.IMREAD_GRAYSCALE), 0.09))
 
-img = cv2.imread('../TrainingSet/Disguise/D023.png', cv2.IMREAD_GRAYSCALE)
-print(classify(img, 0.09))
+""" Number of matched points for Simulated Signatures """
+print("Forged Signatures")
+file_names = os.listdir('../TrainingSet/Simulated')
+for img_name in file_names:
+    print(classify(cv2.imread('../TrainingSet/Simulated/' + img_name, cv2.IMREAD_GRAYSCALE), 0.09))
 
-img = cv2.imread('../TrainingSet/Simulated/S002.png', cv2.IMREAD_GRAYSCALE)
-print(classify(img, 0.09))
+""" Number of matched points for Disguised Signatures """
+print("Disguised Signatures")
+file_names = os.listdir('../TrainingSet/Disguise')
+for img_name in file_names:
+    print(classify(cv2.imread('../TrainingSet/Disguise/' + img_name, cv2.IMREAD_GRAYSCALE), 0.09))
