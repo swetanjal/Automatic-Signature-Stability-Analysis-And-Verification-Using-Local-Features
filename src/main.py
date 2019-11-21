@@ -4,18 +4,22 @@ import matplotlib
 import PIL
 import numpy as np
 import os
+import pickle
 
+########################################### Helper Functions ##########################################
 def display_images(image):
     cv2.imshow('Showing image', image)
     cv2.waitKey()
 
-def preprocess(arr):
-    res = []
-    for i in range(arr.shape[0]):
-        _, ret = cv2.threshold(arr[i], 127, 255, cv2.THRESH_BINARY)
-        res.append(ret)
-    res = np.array(res)
-    return res
+def storeData(dat, filename):
+    dbfile = open(filename, 'ab') 
+    pickle.dump(dat, dbfile)                      
+    dbfile.close()
+
+def loadData(filename):
+    dbfile = open(filename, 'rb')
+    return pickle.load(dbfile)
+#######################################################################################################
 
 def createDB():
     img = []
@@ -56,10 +60,10 @@ def createDB():
                     finalDB.append(keypoint)
                     count = count + 1
                     break
-        print("Total number of points = ", des.shape[0])
-        print("Green points = ", count)
-        print("Average distance = ", avg_dist)
-    return finalDB
+    return np.array(finalDB)
 
-DB = createDB()
+# DB = createDB()
+# storeData(DB, 'database')
+
+DB = loadData('database')
 print(DB.shape)
