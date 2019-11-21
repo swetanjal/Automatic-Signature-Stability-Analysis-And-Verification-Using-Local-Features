@@ -62,8 +62,30 @@ def createDB():
                     break
     return np.array(finalDB)
 
+def classify(test_img, theta):
+    surf = cv2.xfeatures2d.SURF_create(hessianThreshold = 1000, extended=1)
+    kp, des = surf.detectAndCompute(test_img, None)
+    matched_points = 0
+    for keypoint in des:
+
+        for db_point in DB:
+            if np.linalg.norm(db_point - keypoint) <= theta:
+                matched_points = matched_points + 1
+    return matched_points
 # DB = createDB()
 # storeData(DB, 'database')
 
 DB = loadData('database')
 print(DB.shape)
+
+img = cv2.imread('../TrainingSet/Genuine/G003.png', cv2.IMREAD_GRAYSCALE)
+print(classify(img, 0.09))
+
+img = cv2.imread('../TrainingSet/Genuine/G007.png', cv2.IMREAD_GRAYSCALE)
+print(classify(img, 0.09))
+
+img = cv2.imread('../TrainingSet/Disguise/D023.png', cv2.IMREAD_GRAYSCALE)
+print(classify(img, 0.09))
+
+img = cv2.imread('../TrainingSet/Simulated/S002.png', cv2.IMREAD_GRAYSCALE)
+print(classify(img, 0.09))
