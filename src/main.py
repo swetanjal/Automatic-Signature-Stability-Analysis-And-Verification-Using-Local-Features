@@ -157,21 +157,21 @@ for img_name in file_names:
 
 # Results
 
-plt.title("Matched Points ; Neighbourhood : " + str(neighbourhood))
+plt.title("Matched Points ; Threshhold : " + str(threshhold))
 plt.plot(range(10), genuine_match,  label="Genuine", color='r')
 plt.plot(range(10), simulated_match,  label="Simulated", color='g')
 plt.plot(range(10), disguised_match,  label="Disguised", color='b')
 plt.legend()
 plt.show()
 
-plt.title("Matched Avg Distance ; Neighbourhood : " + str(neighbourhood))
+plt.title("Matched Avg Distance ; Threshhold : " + str(threshhold))
 plt.plot(range(10), genuine_mavg_dist,  label="Genuine", color='r')
 plt.plot(range(10), simulated_mavg_dist,  label="Simulated", color='g')
 plt.plot(range(10), disguised_mavg_dist,  label="Disguised", color='b')
 plt.legend()
 plt.show()
 
-plt.title("Non Matched Avg Distance ; Neighbourhood : " + str(neighbourhood))
+plt.title("Non Matched Avg Distance ; Threshhold : " + str(threshhold))
 plt.plot(range(10), genuine_navg_dist,  label="Genuine", color='r')
 plt.plot(range(10), simulated_navg_dist,  label="Simulated", color='g')
 plt.plot(range(10), disguised_navg_dist,  label="Disguised", color='b')
