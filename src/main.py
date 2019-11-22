@@ -103,9 +103,9 @@ print(DB.shape)
 
 test_size = 10
 neighbourhood = 1
-# threshhold = 0.105
+threshhold = 0.01
 
-for threshhold in np.arrange(0, 1, 0.1):
+while threshhold <= 1:
     """ Number of matched points for Genuine Signatures """
 
     print("Genuine Signatures")
@@ -162,7 +162,7 @@ for threshhold in np.arrange(0, 1, 0.1):
     plt.plot(range(10), disguised_match,  label="Disguised", color='b')
     plt.legend()
     plt.savefig("matpoints" + str(threshhold) + ".png")
-    plt.show()
+    #plt.show()
 
     plt.title("Matched Avg Distance ; Threshhold : " + str(threshhold))
     plt.plot(range(10), genuine_mavg_dist,  label="Genuine", color='r')
@@ -170,7 +170,7 @@ for threshhold in np.arrange(0, 1, 0.1):
     plt.plot(range(10), disguised_mavg_dist,  label="Disguised", color='b')
     plt.legend()
     plt.savefig("matavg" + str(threshhold) + ".png")
-    plt.show()
+    #plt.show()
 
     plt.title("Non Matched Avg Distance ; Threshhold : " + str(threshhold))
     plt.plot(range(10), genuine_navg_dist,  label="Genuine", color='r')
@@ -178,4 +178,5 @@ for threshhold in np.arrange(0, 1, 0.1):
     plt.plot(range(10), disguised_navg_dist,  label="Disguised", color='b')
     plt.legend()
     plt.savefig("nmatavg" + str(threshhold) + ".png")
-    plt.show()
+    #plt.show()
+    threshhold += 0.01
