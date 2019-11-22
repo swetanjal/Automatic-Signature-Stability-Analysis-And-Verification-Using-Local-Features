@@ -103,6 +103,7 @@ print(DB.shape)
 
 test_size = 10
 neighbourhood = 1
+threshhold = 0.105
 
 """ Number of matched points for Genuine Signatures """
 
@@ -114,7 +115,7 @@ genuine_navg_dist = []
 file_names = os.listdir('../TrainingSet/Genuine')[:test_size]
 for img_name in file_names:
     matched_points, mavg_dist, navg_dist = classify(cv2.imread('../TrainingSet/Genuine/' +
-                                                               img_name, cv2.IMREAD_GRAYSCALE), 0.09, neighbourhood)
+                                                               img_name, cv2.IMREAD_GRAYSCALE), threshhold, neighbourhood)
     print(matched_points, mavg_dist, navg_dist)
     genuine_match.append(matched_points)
     genuine_mavg_dist.append(mavg_dist)
@@ -130,7 +131,7 @@ print("Forged Signatures")
 file_names = os.listdir('../TrainingSet/Simulated')[:test_size]
 for img_name in file_names:
     matched_points, mavg_dist, navg_dist = classify(cv2.imread('../TrainingSet/Simulated/' +
-                                                               img_name, cv2.IMREAD_GRAYSCALE), 0.09, neighbourhood)
+                                                               img_name, cv2.IMREAD_GRAYSCALE), threshhold, neighbourhood)
     print(matched_points, mavg_dist, navg_dist)
     simulated_match.append(matched_points)
     simulated_mavg_dist.append(mavg_dist)
@@ -147,7 +148,7 @@ print("Disguised Signatures")
 file_names = os.listdir('../TrainingSet/Disguise')[:test_size]
 for img_name in file_names:
     matched_points, mavg_dist, navg_dist = classify(cv2.imread('../TrainingSet/Disguise/' +
-                                                               img_name, cv2.IMREAD_GRAYSCALE), 0.09, neighbourhood)
+                                                               img_name, cv2.IMREAD_GRAYSCALE), threshhold, neighbourhood)
     print(matched_points, mavg_dist, navg_dist)
     disguised_match.append(matched_points)
     disguised_mavg_dist.append(mavg_dist)
