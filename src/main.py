@@ -71,6 +71,7 @@ def classify(test_img, theta):
         for db_point in DB:
             if np.linalg.norm(db_point - keypoint) <= theta:
                 matched_points = matched_points + 1
+                break
     return matched_points
 # DB = createDB()
 # storeData(DB, 'database')
