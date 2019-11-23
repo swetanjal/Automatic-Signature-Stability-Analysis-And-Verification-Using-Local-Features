@@ -128,6 +128,7 @@ while threshhold <= 1:
     simulated_mavg_dist = []
     simulated_navg_dist = []
 
+    # plt.ion()
     print("Forged Signatures")
     file_names = os.listdir('../TrainingSet/Simulated')[:test_size]
     for img_name in file_names:
@@ -162,7 +163,9 @@ while threshhold <= 1:
     plt.plot(range(10), disguised_match,  label="Disguised", color='b')
     plt.legend()
     plt.savefig("matpoints" + str(threshhold) + ".png")
-    #plt.show()
+    plt.cla()
+    plt.clf()
+    # plt.show()
 
     plt.title("Matched Avg Distance ; Threshhold : " + str(threshhold))
     plt.plot(range(10), genuine_mavg_dist,  label="Genuine", color='r')
@@ -170,7 +173,9 @@ while threshhold <= 1:
     plt.plot(range(10), disguised_mavg_dist,  label="Disguised", color='b')
     plt.legend()
     plt.savefig("matavg" + str(threshhold) + ".png")
-    #plt.show()
+    plt.cla()
+    plt.clf()
+    # plt.show()
 
     plt.title("Non Matched Avg Distance ; Threshhold : " + str(threshhold))
     plt.plot(range(10), genuine_navg_dist,  label="Genuine", color='r')
@@ -178,5 +183,7 @@ while threshhold <= 1:
     plt.plot(range(10), disguised_navg_dist,  label="Disguised", color='b')
     plt.legend()
     plt.savefig("nmatavg" + str(threshhold) + ".png")
-    #plt.show()
+    plt.cla()
+    plt.clf()
+    # plt.show()
     threshhold += 0.01
