@@ -40,7 +40,7 @@ def createDB():
     surf_db = []
     surf = cv2.xfeatures2d.SURF_create(hessianThreshold=1000, extended=1)
     for i in range(img.shape[0]):
-        kp, des = surf.detectAndCompute(img[j], None)
+        kp, des = surf.detectAndCompute(img[i], None)
         surf_db.append(des)
     surf_db = np.array(surf_db)
 
@@ -94,96 +94,67 @@ def classify(test_img, theta, neighbourhood):
     # return matched_points, avg_dist
     return matched_points, matched_avg, non_matched_avg
 
-# DB = createDB()
-# storeData(DB, 'database')
+DB = createDB()
+storeData(DB, 'database')
 
 
 DB = loadData('database')
-print(DB.shape)
 
 test_size = 10
 neighbourhood = 1
-threshhold = 0.01
+threshhold = 0.11
 
-while threshhold <= 1:
-    """ Number of matched points for Genuine Signatures """
 
-    print("Genuine Signatures")
-    genuine_match = []
-    genuine_mavg_dist = []
-    genuine_navg_dist = []
+""" Number of matched points for Genuine Signatures """
 
-    file_names = os.listdir('../TrainingSet/Genuine')[:test_size]
-    for img_name in file_names:
-        matched_points, mavg_dist, navg_dist = classify(cv2.imread('../TrainingSet/Genuine/' +
-                                                                   img_name, cv2.IMREAD_GRAYSCALE), threshhold, neighbourhood)
-        print(matched_points, mavg_dist, navg_dist)
-        genuine_match.append(matched_points)
-        genuine_mavg_dist.append(mavg_dist)
-        genuine_navg_dist.append(navg_dist)
+print("Genuine Signatures")
+genuine_match = []
+genuine_mavg_dist = []
+genuine_navg_dist = []
 
-    """ Number of matched points for Simulated Signatures """
+file_names = os.listdir('../TrainingSet/Genuine')[:]
+for img_name in file_names:
+    matched_points, mavg_dist, navg_dist = classify(cv2.imread('../TrainingSet/Genuine/' +
+                                                                img_name, cv2.IMREAD_GRAYSCALE), threshhold, neighbourhood)
+    genuine_match.append(matched_points)
+    genuine_mavg_dist.append(mavg_dist)
+    genuine_navg_dist.append(navg_dist)
 
-    simulated_match = []
-    simulated_mavg_dist = []
-    simulated_navg_dist = []
+""" Number of matched points for Simulated Signatures """
 
-    # plt.ion()
-    print("Forged Signatures")
-    file_names = os.listdir('../TrainingSet/Simulated')[:test_size]
-    for img_name in file_names:
-        matched_points, mavg_dist, navg_dist = classify(cv2.imread('../TrainingSet/Simulated/' +
-                                                                   img_name, cv2.IMREAD_GRAYSCALE), threshhold, neighbourhood)
-        print(matched_points, mavg_dist, navg_dist)
-        simulated_match.append(matched_points)
-        simulated_mavg_dist.append(mavg_dist)
-        simulated_navg_dist.append(navg_dist)
+simulated_match = []
+simulated_mavg_dist = []
+simulated_navg_dist = []
 
-    """ Number of matched points for Disguised Signatures """
+print("Forged Signatures")
+file_names = os.listdir('../TrainingSet/Simulated')[:]
+for img_name in file_names:
+    matched_points, mavg_dist, navg_dist = classify(cv2.imread('../TrainingSet/Simulated/' +
+                                                                img_name, cv2.IMREAD_GRAYSCALE), threshhold, neighbourhood)
+    simulated_match.append(matched_points)
+    simulated_mavg_dist.append(mavg_dist)
+    simulated_navg_dist.append(navg_dist)
 
-    disguised_match = []
-    disguised_mavg_dist = []
-    disguised_navg_dist = []
+""" Number of matched points for Disguised Signatures """
 
-    print("Disguised Signatures")
-    file_names = os.listdir('../TrainingSet/Disguise')[:test_size]
-    for img_name in file_names:
-        matched_points, mavg_dist, navg_dist = classify(cv2.imread('../TrainingSet/Disguise/' +
-                                                                   img_name, cv2.IMREAD_GRAYSCALE), threshhold, neighbourhood)
-        print(matched_points, mavg_dist, navg_dist)
-        disguised_match.append(matched_points)
-        disguised_mavg_dist.append(mavg_dist)
-        disguised_navg_dist.append(navg_dist)
+disguised_match = []
+disguised_mavg_dist = []
+disguised_navg_dist = []
 
-    # Results
+print("Disguised Signatures")
+file_names = os.listdir('../TrainingSet/Disguise')[:]
+for img_name in file_names:
+    matched_points, mavg_dist, navg_dist = classify(cv2.imread('../TrainingSet/Disguise/' +
+                                                                img_name, cv2.IMREAD_GRAYSCALE), threshhold, neighbourhood)
+    disguised_match.append(matched_points)
+    disguised_mavg_dist.append(mavg_dist)
+    disguised_navg_dist.append(navg_dist)
 
-    plt.title("Matched Points ; Threshhold : " + str(threshhold))
-    plt.plot(range(10), genuine_match,  label="Genuine", color='r')
-    plt.plot(range(10), simulated_match,  label="Simulated", color='g')
-    plt.plot(range(10), disguised_match,  label="Disguised", color='b')
-    plt.legend()
-    plt.savefig("matpoints" + str(threshhold) + ".png")
-    plt.cla()
-    plt.clf()
-    # plt.show()
-
-    # plt.title("Matched Avg Distance ; Threshhold : " + str(threshhold))
-    # plt.plot(range(10), genuine_mavg_dist,  label="Genuine", color='r')
-    # plt.plot(range(10), simulated_mavg_dist,  label="Simulated", color='g')
-    # plt.plot(range(10), disguised_mavg_dist,  label="Disguised", color='b')
-    # plt.legend()
-    # plt.savefig("matavg" + str(threshhold) + ".png")
-    # plt.cla()
-    # plt.clf()
-    # plt.show()
-
-    # plt.title("Non Matched Avg Distance ; Threshhold : " + str(threshhold))
-    # plt.plot(range(10), genuine_navg_dist,  label="Genuine", color='r')
-    # plt.plot(range(10), simulated_navg_dist,  label="Simulated", color='g')
-    # plt.plot(range(10), disguised_navg_dist,  label="Disguised", color='b')
-    # plt.legend()
-    # plt.savefig("nmatavg" + str(threshhold) + ".png")
-    # plt.cla()
-    # plt.clf()
-    # plt.show()
-    threshhold += 0.01
+# Results
+plt.title("Matched Points ; Threshhold : " + str(threshhold))
+plt.scatter(genuine_match, [1 for i in range(len(genuine_match))], label="Genuine", color='r')
+plt.scatter(simulated_match, [2 for i in range(len(simulated_match))],  label="Simulated", color='g')
+plt.scatter(disguised_match, [3 for i in range(len(disguised_match))], label="Disguised", color='b')
+plt.savefig("matpoints" + str(threshhold) + ".png")
+plt.cla()
+plt.clf()
