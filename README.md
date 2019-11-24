@@ -54,7 +54,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## Dataset
-Dataset and instructions to download can be found [here](http://www.iapr-tc11.org/mediawiki/index.php/ICFHR_2010_Signature_Verification_Competition_(4NSigComp2010)).
+Dataset and instructions to download can be found [here](http://www.iapr-tc11.org/mediawiki/index.php/ICFHR_2010_Signature_Verification_Competition_(4NSigComp2010)). TrainingSet and TestSet folders must be place in the repository's root folder
 
 
 ## License
