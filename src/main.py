@@ -4,11 +4,13 @@ import pickle
 import threading
 import numpy as np
 import matplotlib.pyplot as plt
-from classify import classify
+# User defined Modules
 from createDB import createDB
+from plots import plot_matches, plot_EER
+from classify import classify_matched, thread_helper
 
 
-########################################### Helper Functions ##########################################
+############################### Helper Functions ##############################
 def display_images(image):
     cv2.imshow('Showing image', image)
     cv2.waitKey()
@@ -21,71 +23,41 @@ def storeData(dat, filename):
 def loadData(filename):
     dbfile = open(filename, 'rb')
     return pickle.load(dbfile)
-
-def gen_score(sig_type, test_size = None):
-    # Load File names
-    file_names = os.listdir('../TrainingSet/' + sig_type)
-    # np.random.shuffle(file_names)
-    if test_size is not None:
-        file_names = file_names[:test_size]
-
-    # Variables
-    idx = 0
-    limit = 20
-    threads = [None] * limit
-    avg = [None] * len(file_names)
-    match = [None] * len(file_names)
-
-    # Generate scores for each signature type
-    for i, img_name in enumerate(file_names):
-        # Run only limit number of threads
-        if idx % limit == 0 and idx != 0:
-            for j in range(limit):
-                threads[j].join()
-            idx = 0
-        # Run thread
-        threads[idx] = threading.Thread(target = classify, args = (cv2.imread('../TrainingSet/' + sig_type + '/' +
-                              img_name, cv2.IMREAD_GRAYSCALE), DB, threshold, neighbourhood, match, avg, i))
-        threads[idx].start()
-        idx += 1
-
-    for j in range(idx):
-        threads[j].join()
-    return match, avg
-#######################################################################################################
+###############################################################################
 
 
-DB = createDB()
-storeData(DB, 'database')
-DB = loadData('database')
-# test_size = 10
-test_size = None
-neighbourhood = 1
-threshold = 0.11
+# Load/Save DB
+DB = createDB('../TrainingSet/Reference/')
+storeData(DB, '../Pickles/database.pkl')
+DB = loadData('../Pickles/database.pkl')
+threshold = 0.13
 
 
-# Matched Points for each type of signature
+# Matched Points Percentage for each type of signature
 print("Genuine Signatures")
-genuine_match, genuine_avg = gen_score('Genuine', test_size)
+genuine_match = thread_helper('../TrainingSet/Genuine/', DB, threshold)
 print("Disguise Signatures")
-disguise_match, disguise_avg = gen_score('Disguise', test_size)
+disguise_match = thread_helper('../TrainingSet/Disguise/', DB, threshold)
 print("Simulated Signatures")
-simulated_match, simulated_avg = gen_score('Simulated', test_size)
+simulated_match = thread_helper('../TrainingSet/Simulated/', DB, threshold)
+plot_matches(genuine_match, disguise_match, simulated_match, threshold)
 
 
-# Results
-plt.figure(figsize = (20, 8))
-plt.subplot(1, 2, 1)
-match = [genuine_match, disguise_match, simulated_match]
-plt.hist(match, label=['Genuine', 'Disguise', 'Simulated'])
-plt.legend()
-plt.title('Matched Points')
+# Save/Load percentages (for convenience)
+storeData([genuine_match, disguise_match, simulated_match], '../Pickles/vals' +
+                                            str(threshold) + '.pkl')
+genuine_match, disguise_match, simulated_match = loadData('../Pickles/vals' +
+                                          str(threshold) + '.pkl')
 
-plt.subplot(1, 2, 2)
-avg = [genuine_avg, disguise_avg, simulated_avg]
-plt.hist(avg, label=['Genuine', 'Disguise', 'Simulated'])
-plt.legend()
-plt.title('Average Distance')
 
-plt.savefig('Matchpoints' + str(threshold) + '.jpg')
-plt.show()
+# Calculate FAR and FRR
+far = []
+frr = []
+theta_range = np.arange(0.05, 0.15, 0.005)
+for theta in theta_range:
+    ind = np.where(genuine_match < theta)
+    ind1 = np.where(disguise_match > theta)
+    ind2 = np.where(simulated_match > theta)
+    frr.append(ind[0].shape[0] / genuine_match.shape[0] * 100)
+    far.append((ind1[0].shape[0] + ind2[0].shape[0]) / (disguise_match.shape[0] + simulated_match.shape[0]) * 100)
+plot_EER(theta_range, far, frr, threshold)

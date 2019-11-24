@@ -1,21 +1,21 @@
 """ Create the Reference Database """
-
 import os
 import cv2
 import numpy as np
 
-def createDB():
+def createDB(path):
+    """ Create the Reference Database """
+
     # Load Images
     img = []
-    file_names = os.listdir('../TrainingSet/Reference')
+    file_names = os.listdir(path)
     for img_name in file_names:
-        img.append(cv2.imread('../TrainingSet/Reference/' +
-                              img_name, cv2.IMREAD_GRAYSCALE))
+        img.append(cv2.imread(path + img_name, cv2.IMREAD_GRAYSCALE))
     img = np.array(img)
 
     # Perform SURF for each Reference Image
     surf_db = []
-    surf = cv2.xfeatures2d.SURF_create(hessianThreshold=1000, extended=1)
+    surf = cv2.xfeatures2d.SURF_create(hessianThreshold = 1000, extended = 1)
     for i in range(img.shape[0]):
         kp, des = surf.detectAndCompute(img[i], None)
         surf_db.append(des)
