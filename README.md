@@ -9,7 +9,7 @@ Clone the repository [here](https://github.com/swetanjal/Automatic-Signature-Sta
 ```
 ## Usage
 
-Run Demo
+Run Demo (Run Train model before hand)
 ```bash
    >>> python3 demo.py
 ```
