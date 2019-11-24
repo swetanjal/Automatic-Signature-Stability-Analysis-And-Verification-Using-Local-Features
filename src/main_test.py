@@ -67,7 +67,7 @@ plot_EER(theta_range, far, frr, threshold)
 
 
 # Compute Confidence Matrix
-eer = 0.13
+eer = 0.224
 ind = np.where(genuine_match < eer)
 ind1 = np.where(disguise_match < eer)
 ind2 = np.where(simulated_match > eer)
