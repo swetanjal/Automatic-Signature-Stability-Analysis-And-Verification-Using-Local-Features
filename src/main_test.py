@@ -32,7 +32,7 @@ def loadData(filename):
 DB = createDB('../TestSet/Reference/')
 storeData(DB, '../Pickles/database_test.pkl')
 DB = loadData('../Pickles/database_test.pkl')
-threshold = 0.13
+threshold = 0.11
 
 
 # Matched Points Percentage for each type of signature
@@ -56,11 +56,22 @@ plot_matches(genuine_match, disguise_match, simulated_match, '_test')
 # Calculate FAR and FRR
 far = []
 frr = []
-theta_range = np.arange(0.21, 0.24, 0.005)
+theta_range = np.arange(0.05, 0.25, 0.005)
 for theta in theta_range:
-    ind = np.where(genuine_match < theta)
-    ind1 = np.where(disguise_match > theta)
-    ind2 = np.where(simulated_match > theta)
-    frr.append(ind[0].shape[0] / genuine_match.shape[0] * 100)
-    far.append((ind1[0].shape[0] + ind2[0].shape[0]) / (disguise_match.shape[0] + simulated_match.shape[0]) * 100)
-plot_EER(theta_range, far, frr, '_test')
+    ind1 = np.where(genuine_match < theta)
+    ind2 = np.where(disguise_match < theta)
+    ind3 = np.where(simulated_match > theta)
+    frr.append((ind1[0].shape[0] + ind2[0].shape[0]) / (genuine_match.shape[0] + disguise_match.shape[0]) * 100)
+    far.append(ind3[0].shape[0] / simulated_match.shape[0] * 100)
+plot_EER(theta_range, far, frr, threshold)
+
+
+# Compute Confidence Matrix
+eer = 0.13
+ind = np.where(genuine_match < eer)
+ind1 = np.where(disguise_match < eer)
+ind2 = np.where(simulated_match > eer)
+print('\t\tGenuine\tFake')
+print('Genuine\t\t' + str(genuine_match.shape[0] - ind[0].shape[0]) + '\t' + str(ind[0].shape[0]))
+print('Disguise\t' + str(disguise_match.shape[0] - ind1[0].shape[0]) + '\t' + str(ind1[0].shape[0]))
+print('Simulated\t' + str(ind2[0].shape[0]) + '\t' + str(simulated_match.shape[0] - ind2[0].shape[0]))

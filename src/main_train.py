@@ -57,20 +57,20 @@ far = []
 frr = []
 theta_range = np.arange(0.01, 0.05, 0.005)
 for theta in theta_range:
-    ind = np.where(genuine_match < theta)
-    ind1 = np.where(disguise_match > theta)
-    ind2 = np.where(simulated_match > theta)
-    frr.append(ind[0].shape[0] / genuine_match.shape[0] * 100)
-    far.append((ind1[0].shape[0] + ind2[0].shape[0]) / (disguise_match.shape[0] + simulated_match.shape[0]) * 100)
+    ind1 = np.where(genuine_match < theta)
+    ind2 = np.where(disguise_match < theta)
+    ind3 = np.where(simulated_match > theta)
+    frr.append((ind1[0].shape[0] + ind2[0].shape[0]) / (genuine_match.shape[0] + disguise_match.shape[0]) * 100)
+    far.append(ind3[0].shape[0] / simulated_match.shape[0] * 100)
 plot_EER(theta_range, far, frr, threshold)
 
 
 # Compute Confidence Matrix
-eer = 0.03
+eer = 0.0275
 ind = np.where(genuine_match < eer)
-ind1 = np.where(disguise_match > eer)
+ind1 = np.where(disguise_match < eer)
 ind2 = np.where(simulated_match > eer)
 print('\t\tGenuine\tFake')
 print('Genuine\t\t' + str(genuine_match.shape[0] - ind[0].shape[0]) + '\t' + str(ind[0].shape[0]))
-print('Disguise\t' + str(ind1[0].shape[0]) + '\t' + str(disguise_match.shape[0] - ind1[0].shape[0]))
+print('Disguise\t' + str(disguise_match.shape[0] - ind1[0].shape[0]) + '\t' + str(ind1[0].shape[0]))
 print('Simulated\t' + str(ind2[0].shape[0]) + '\t' + str(simulated_match.shape[0] - ind2[0].shape[0]))
