@@ -1,7 +1,36 @@
 # Automatic Signature Stability Analysis And Verification Using Local Features
 
-### Team Name: Jai Ballaya
-### Team Members: Nishant Sharma, Swetanjal Dutta, Teja Sai Dhondu
+## Installation
+
+Clone the repository [here](https://github.com/swetanjal/Automatic-Signature-Stability-Analysis-And-Verification-Using-Local-Features).
+
+```bash
+   >>> git clone https://github.com/swetanjal/Automatic-Signature-Stability-Analysis-And-Verification-Using-Local-Features
+```
+## Usage
+
+Run Demo
+```bash
+   >>> python3 demo.py
+```
+
+Train model
+```bash
+   >>> python3 main_train.py
+```
+
+
+Test model
+```bash
+   >>> python3 main_test.py
+```
+
+## Requisites
+ - `opencv-contrib-python:` Contains implementation of SURF
+ ```bash
+    >>> pip3 install opencv-contrib-python
+ ```
+ - `threading:` This code uses threading to parallelize
 
 ## Folders
  - `Documents:` Research Paper & Project Proposal
@@ -19,11 +48,14 @@
  - `main_test.py:` Generate graphs and results for test set
  - `plots.py:` Plotting functions
 
-## Requisites
- - `opencv-contrib-python:` Contains implementation of SURF
- - `threading:` This code uses threading to parallelize
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+[Nishant Sharma](https://github.com/nishanth2358), [Swetanjal Dutta](https://github.com/swetanjal), [Teja Sai Dhondu](https://github.com/TD87)
+Please make sure to update tests as appropriate.
 
-## How to Run
- - `demo.py:` python3 demo.py
- - `main_train.py:` python3 main_train.py
- - `main_test.py:` python3 main_test.py
+## Dataset
+Dataset and instructions to download can be found [here](http://www.iapr-tc11.org/mediawiki/index.php/ICFHR_2010_Signature_Verification_Competition_(4NSigComp2010)).
+
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
