@@ -10,7 +10,9 @@ def createDB(path):
     img = []
     file_names = os.listdir(path)
     for img_name in file_names:
-        img.append(cv2.imread(path + img_name, cv2.IMREAD_GRAYSCALE))
+        l = len(img_name)
+        if img_name[l - 4: l] == ".png":
+            img.append(cv2.imread(path + img_name, cv2.IMREAD_GRAYSCALE))
     img = np.array(img)
 
     # Perform SURF for each Reference Image
