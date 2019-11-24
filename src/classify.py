@@ -32,7 +32,7 @@ def thread_helper(path, DB, threshold, test_size = None):
 
     # Variables
     idx = 0
-    limit = 20
+    limit = 10
     threads = [None] * limit
     match = [None] * len(file_names)
 
